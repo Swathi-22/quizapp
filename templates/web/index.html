@@ -16,7 +16,7 @@
  
  <form method='post' action=''>
     {% csrf_token %}
-    {% for q  in pagination %}
+    {% for q  in questions %}
     <div class="form-group">
       <label for="question">{{q.question}}</label>
     </div>
@@ -50,28 +50,6 @@
    
     {% endfor %}
 
-
-    <div class="pagination">
-        <span class="step-links">
-            {% if pagination.has_previous %}
-                <a href="?page=1">&laquo; first</a>
-                <a href="?page={{ pagination.previous_page_number }}">&lsaquo; previous</a>
-            {% endif %}
-    
-            <span class="current-page">
-                Page {{ pagination.number }} of {{ pagination.paginator.num_pages }}
-            </span>
-    
-            {% if pagination.has_next %}
-                <a href="?page={{ pagination.next_page_number }}">next &rsaquo;</a>
-                <a href="?page={{ pagination.paginator.num_pages }}">last &raquo;</a>
-                
-            {% endif %}
-        </span>
-    </div>
-
-    
-    
     <input id='timer' type='hidden' name="timer" value="">
     <br>
   

@@ -53,11 +53,8 @@ def addQuestion(request):
 
 
 def index(request):
-    questions = Question.objects.all()
-    pagination = Paginator(questions, 1)
-    page = request.GET.get('page')
-    qs= pagination.get_page(page)
     if request.method == 'POST':
+        questions = Question.objects.all()
         score=0
         wrong=0
         correct=0   
@@ -87,8 +84,6 @@ def index(request):
         questions=Question.objects.all()
         context = {
             'questions':questions,
-            'page':page,
-            'pagination':qs,
         }
         return render(request,'web/index.html',context)
 
