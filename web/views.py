@@ -1,9 +1,10 @@
 from django.shortcuts import render,redirect
 from .models import Question
 from .forms import CreateUserForm
+from .forms import QuestionAddingForm
 from .forms import LoginForm
 from django.contrib.auth import login,logout,authenticate
-
+from django.core.paginator import Paginator
 
 
 
@@ -32,13 +33,63 @@ def signin(request):
     return render(request,'web/login.html',context)
 
 
-def logout(request):
-    context = {}
-    return render()
+def logout_page(request):
+    logout(request)
+    return redirect('/')
+
+
+def addQuestion(request):    
+    if request.user.is_staff:
+        form=QuestionAddingForm()
+        if(request.method=='POST'):
+            form=QuestionAddingForm(request.POST)
+            if(form.is_valid()):
+                form.save()
+                return redirect('/')
+        context={'form':form}
+        return render(request,'web/add_question.html',context)
+    else: 
+        return redirect('web:index') 
 
 
 def index(request):
-    context = {}
-    return render(request,'web/index.html',context)
+    questions = Question.objects.all()
+    pagination = Paginator(questions, 1)
+    page = request.GET.get('page')
+    qs= pagination.get_page(page)
+    if request.method == 'POST':
+        score=0
+        wrong=0
+        correct=0   
+        total=0
+        for q in questions:
+            total=total+1
+            answer = request.POST.get(q.question) 
+            if q.ans == answer:
+                score = score+10
+                correct = correct+1
+            else:
+                wrong = wrong+1
+
+        percent = score/(total*10) *100
+        
+        context = {
+            'score':score,
+            'time': request.POST.get('timer'),
+            'correct':correct,
+            'wrong':wrong,
+            'percent':percent,
+            'total':total,
+            
+            }
+        return render(request,'web/result.html',context)
+    else:
+        questions=Question.objects.all()
+        context = {
+            'questions':questions,
+            'page':page,
+            'pagination':qs,
+        }
+        return render(request,'web/index.html',context)
 
 
