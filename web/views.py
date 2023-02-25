@@ -67,15 +67,10 @@ def index(request):
                 correct = correct+1
             else:
                 wrong = wrong+1
-
-        percent = score/(total*10) *100
-        
         context = {
             'score':score,
-            'time': request.POST.get('timer'),
             'correct':correct,
             'wrong':wrong,
-            'percent':percent,
             'total':total,
             
             }

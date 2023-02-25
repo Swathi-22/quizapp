@@ -12,7 +12,6 @@
 <div class="container ">
 <h1>Welcome to  Quiz</h1>
  
-<div style='text-align:right' id="displaytimer"><b>Timer: 0 seconds</b></div>
  
  <form method='post' action=''>
     {% csrf_token %}
@@ -58,25 +57,6 @@
     
   </form>
 
-
-  
-
-    {% block script %}
-        <script>
- 
-            console.log('hello world')
-            const timer=document.getElementById('displaytimer')
-            console.log(timer.textContent)
-            const inputtag = document.getElementById('timer')
- 
-            t=0
-            setInterval(()=>{
-                t+=1
-                timer.innerHTML ="<b>Timer: " +t+" seconds</b>"
-                inputtag.value = t
-            },1000)
-        </script>
-    {% endblock script %}
  
 </div>
 {% endblock %}
