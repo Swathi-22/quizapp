@@ -4,7 +4,6 @@ from .forms import CreateUserForm
 from .forms import QuestionAddingForm
 from .forms import LoginForm
 from django.contrib.auth import login,logout,authenticate
-from django.core.paginator import Paginator
 
 
 
