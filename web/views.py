@@ -12,7 +12,9 @@ def signup(request):
     if request.method=='POST':
         form = CreateUserForm(request.POST)
         if form.is_valid():
-            user = form.save()
+            user = form.save(commit=False)
+            user.is_active = False
+            user.save()
             return redirect('web:signin')
     context = {"form":form,}
     return render(request,'web/register.html',context)
@@ -62,7 +64,7 @@ def index(request):
             total=total+1
             answer = request.POST.get(q.question) 
             if q.ans == answer:
-                score = score+10
+                score = score+1
                 correct = correct+1
             else:
                 wrong = wrong+1
